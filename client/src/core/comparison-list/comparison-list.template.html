@@ -2,10 +2,10 @@
     <tbody>
         <tr ng-repeat="row in $ctrl.comparisons">
             <th scope="row">{{ row.id }}</th>
-            <td>one phrase</td>
-            <td class="text-muted">1,943</td>
-            <td>another phrase</td>
-            <td class="text-muted table-success">1,954</td>
+            <td>{{ row.phraseA.phrase }}</td>
+            <td class="text-muted">{{ row.phraseA.matchCount }}</td>
+            <td>{{ row.phraseB.phrase }}</td>
+            <td class="text-muted table-success">{{ row.phraseB.matchCount }}</td>
         </tr>
     </tbody>
 </table>

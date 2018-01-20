@@ -8,8 +8,8 @@
             controller: ComparisonListController,
             bindings: {
                 ptType: '<',
-                userId: '<',
-                maxCount: '<'
+                ptUsername: '<',
+                ptMaxCount: '<'
             }
         });
 
@@ -18,18 +18,20 @@
     function ComparisonListController(repo) {
         var $this = this;
 
+        this.$onInit =function(){
+            this.comparisons = types[$this.ptType]();
+        };
+
         var types = {
             user: getByUser,
             all: getTop
         };
-        
-        this.comparisons = types[$this.ptType]();
 
         function getByUser() { 
-            return repo.getByUser($this.id, 5);
+            return repo.getByUser($this.ptUsername, $this.ptMaxCount);
         }
         function getTop(){
-            return repo.getTop(5);
+            return repo.getTop($this.ptMaxCount);
         }
     }
 })();
