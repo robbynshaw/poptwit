@@ -1,35 +1,7 @@
 <table class="table table-sm mb-0">
     <tbody>
-        <tr>
-            <th scope="row">1</th>
-            <td>one phrase</td>
-            <td class="text-muted">1,943</td>
-            <td>another phrase</td>
-            <td class="text-muted table-success">1,954</td>
-        </tr>
-        <tr>
-            <th scope="row">2</th>
-            <td>one phrase</td>
-            <td class="text-muted">1,943</td>
-            <td>another phrase</td>
-            <td class="text-muted table-success">1,954</td>
-        </tr>
-        <tr>
-            <th scope="row">3</th>
-            <td>one phrase</td>
-            <td class="text-muted">1,943</td>
-            <td>another phrase</td>
-            <td class="text-muted table-success">1,954</td>
-        </tr>
-        <tr>
-            <th scope="row">4</th>
-            <td>one phrase</td>
-            <td class="text-muted">1,943</td>
-            <td>another phrase</td>
-            <td class="text-muted table-success">1,954</td>
-        </tr>
-        <tr>
-            <th scope="row">5</th>
+        <tr ng-repeat="row in $ctrl.comparisons">
+            <th scope="row">{{ row.id }}</th>
             <td>one phrase</td>
             <td class="text-muted">1,943</td>
             <td>another phrase</td>
