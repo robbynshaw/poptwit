@@ -1,3 +1,3 @@
 'use strict';
 
-angular.module('popTwit.comparisonList', []);
+angular.module('popTwit.comparisonList', ['popTwit.comparisonRepo']);
