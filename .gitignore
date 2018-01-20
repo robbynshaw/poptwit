@@ -1,0 +1,11 @@
+client/logs/*
+!.gitkeep
+node_modules/
+client/vendor/bower_components/
+client/tmp
+.DS_Store
+.idea
+.vscode/*
+obj/Debug/*
+obj/poptwit*
+bin/*
