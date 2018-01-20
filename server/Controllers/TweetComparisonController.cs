@@ -25,5 +25,12 @@ namespace poptwit.Controllers
         {
             return _repo.GetByUser(username, maxCount);
         }
+
+        [Route("api/tweetcomparison")]
+        [HttpPut]
+        public TweetComparison Put(TweetComparison inputComparison)
+        {
+            return _repo.Add(inputComparison);
+        }
     }
 }

@@ -2,7 +2,8 @@
 
 angular.module('popTwit.compare', [
   'ngRoute',
-  'popTwit.comparisonList'
+  'popTwit.comparisonList',
+  'popTwit.comparisonForm'
 ])
 
 .config(['$routeProvider', function($routeProvider) {

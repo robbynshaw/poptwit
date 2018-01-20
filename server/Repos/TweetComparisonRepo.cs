@@ -47,5 +47,12 @@ namespace poptwit.Repos
                 }
             };
         }
+
+        public TweetComparison Add(TweetComparison inputComparison)
+        {
+            inputComparison.PhraseA.MatchCount = 20;
+            inputComparison.PhraseB.MatchCount = 30;
+            return inputComparison;
+        }
     }
 }
