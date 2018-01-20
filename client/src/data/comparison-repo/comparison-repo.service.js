@@ -10,16 +10,16 @@
     function ComparisonRepo($resource) {
         return {
             getByUser: getByUser,
-            getTop: getTop
+            getTop: getTop,
+            add: add
         };
         ////////////////
 
         function getByUser(username, maxCount) {
-            return $resource('/api/TweetComparison/:username', {}, {
+            return $resource('/api/TweetComparison/user', {}, {
                 query: {
                     method: 'GET',
                     params: {
-                        username: username,
                         maxCount: maxCount
                     },
                     isArray: true
@@ -35,6 +35,18 @@
                         maxCount: maxCount
                     },
                     isArray: true
+                }
+            }).query();
+        }
+
+        function add(aPhrase, bPhrase) {
+            return $resource('/api/TweetComparison', {}, {
+                query: {
+                    method: 'PUT',
+                    params: {
+                        aPhrase: aPhrase,
+                        bPhrase: bPhrase
+                    },
                 }
             }).query();
         }

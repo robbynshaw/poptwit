@@ -9,3 +9,4 @@ client/tmp
 obj/Debug/*
 obj/poptwit*
 bin/*
+*.db

@@ -1,31 +1,13 @@
 using System.Collections.Generic;
+using System.Linq;
+using Microsoft.AspNetCore.Http;
 using poptwit.Models;
 
 namespace poptwit.Repos
 {
     internal class TweetComparisonRepo
     {
-        public IEnumerable<TweetComparison> GetByUser(string username, int maxCount)
-        {
-            return new List<TweetComparison>()
-            {
-                new TweetComparison()
-                {
-                    PhraseA = new TwitterPhrase()
-                    {
-                        Phrase = "Hello There",
-                        MatchCount = 123,
-                        IsMostPopular = true,
-                    },
-                    PhraseB = new TwitterPhrase()
-                    {
-                        Phrase = "Hi Boy",
-                        MatchCount = 1,
-                    }
-                }
-            };
-
-        }
+        private UserRepo _userRepo = new UserRepo();
 
         public IEnumerable<TweetComparison> GetTop(int maxCount)
         {
@@ -33,25 +15,42 @@ namespace poptwit.Repos
             {
                 new TweetComparison()
                 {
-                    PhraseA = new TwitterPhrase()
-                    {
-                        Phrase = "Hello",
-                        MatchCount = 123,
-                        IsMostPopular = true,
-                    },
-                    PhraseB = new TwitterPhrase()
-                    {
-                        Phrase = "Hi",
-                        MatchCount = 1,
-                    }
+                    APhrase = "Hello",
+                    AMatchCount = 123,
+                    BPhrase = "Hi",
+                    BMatchCount = 1,
                 }
             };
         }
-
-        public TweetComparison Add(TweetComparison inputComparison)
+        
+        public IEnumerable<TweetComparison> GetForCurrentUser(HttpRequest request, int maxCount)
         {
-            inputComparison.PhraseA.MatchCount = 20;
-            inputComparison.PhraseB.MatchCount = 30;
+            using (var db = new PopContext())
+            {
+                User user = _userRepo.GetOrCreate(db, request);
+                db.Entry(user)
+                    .Collection(u => u.Comparisons)
+                    .Load();
+                return user.Comparisons
+                    .OrderBy(c => c.Created)
+                    .Take(maxCount);
+            }
+        }
+
+        public TweetComparison Add(HttpRequest request, TweetComparison inputComparison)
+        {
+            inputComparison.AMatchCount = 20;
+            inputComparison.BMatchCount = 30;
+            
+            using (PopContext db = new PopContext())
+            {
+                User user = _userRepo.GetOrCreate(db, request);
+                inputComparison.UserId = user.UserId;
+
+                db.Add(inputComparison);
+                db.SaveChanges();
+            }
+
             return inputComparison;
         }
     }

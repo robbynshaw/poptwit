@@ -20,7 +20,7 @@
 
         this.addNew = function(phraseA, phraseB) {
             toastr.info('Submitted new comparison', 'Submitted');
-            repo.addNew(phraseA, phraseB)
+            repo.add(phraseA, phraseB)
                 .then(emitAdded);
         }
 

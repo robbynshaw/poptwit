@@ -10,27 +10,28 @@ namespace poptwit.Controllers
 {
     public class TweetComparisonController : Controller
     {
-        private TweetComparisonRepo _repo = new TweetComparisonRepo();
+        private UserRepo _userRepo = new UserRepo();
+        private TweetComparisonRepo _comparisonRepo = new TweetComparisonRepo();
 
         [Route("api/tweetcomparison")]
         [HttpGet]
         public IEnumerable<TweetComparison> Get(int maxCount = 20)
         {
-            return _repo.GetTop(maxCount);
+            return _comparisonRepo.GetTop(maxCount);
         }
 
-        [Route("api/tweetcomparison/{username}")] 
+        [Route("api/tweetcomparison/user")] 
         [HttpGet]
-        public IEnumerable<TweetComparison> ByUser(string username, int maxCount = 20)
+        public IEnumerable<TweetComparison> ByUser(int maxCount = 20)
         {
-            return _repo.GetByUser(username, maxCount);
+            return _comparisonRepo.GetForCurrentUser(this.Request, maxCount);
         }
 
         [Route("api/tweetcomparison")]
         [HttpPut]
         public TweetComparison Put(TweetComparison inputComparison)
         {
-            return _repo.Add(inputComparison);
+            return _comparisonRepo.Add(this.Request, inputComparison);
         }
     }
 }
