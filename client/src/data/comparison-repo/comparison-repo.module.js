@@ -1,5 +1,5 @@
 (function(){
     'use strict';
 
-    angular.module('popTwit.comparisonRepo', []);
+    angular.module('popTwit.comparisonRepo', ['ngResource']);
 })();

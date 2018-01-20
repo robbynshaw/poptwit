@@ -5,7 +5,9 @@
         .module('popTwit.comparisonRepo')
         .factory('popTwit.comparisonRepo', ComparisonRepo);
 
-    function ComparisonRepo() {
+    ComparisonRepo.$inject = ['ngResource'];
+
+    function ComparisonRepo($resource) {
         return {
             getByUser: getByUser,
             getTop: getTop

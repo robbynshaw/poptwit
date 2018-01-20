@@ -5,26 +5,25 @@
         .module('popTwit.comparisonList')
         .component('comparisonList', {
             templateUrl: 'src/core/comparison-list/comparison-list.template.html',
-            controller: ['popTwit.comparisonRepo', ComparisonListController],
+            controller: ComparisonListController,
             bindings: {
-                type: '<',
+                ptType: '<',
                 userId: '<',
                 maxCount: '<'
             }
         });
 
-    //ComparisonListController.$inject = ['popTwit.comparisonRepo'];
+    ComparisonListController.$inject = ['popTwit.comparisonRepo'];
 
     function ComparisonListController(repo) {
         var $this = this;
-        $this.type = 'user';
 
         var types = {
             user: getByUser,
             all: getTop
-        }
+        };
         
-        this.comparisons = types[$this.type]();
+        this.comparisons = types[$this.ptType]();
 
         function getByUser() { 
             return repo.getByUser($this.id, 5);
