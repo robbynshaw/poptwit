@@ -7,7 +7,7 @@ angular.module('popTwit.compare', [
 
 .config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/compare', {
-    templateUrl: '/src/compare/compare.html',
+    templateUrl: 'src/compare/compare.html',
     controller: 'CompareCtrl'
   });
 }])

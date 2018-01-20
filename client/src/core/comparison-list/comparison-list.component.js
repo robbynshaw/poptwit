@@ -3,6 +3,6 @@
 angular
     .module('popTwit.comparisonList')
     .component('comparisonList', {
-        template: './comparison-list.template.html',
-        controller: './comparison-list.controller.html'
+        templateUrl: 'src/core/comparison-list/comparison-list.template.html',
+        controllerUrl: 'src/core/comparison-list/comparison-list.controller.html'
     })
