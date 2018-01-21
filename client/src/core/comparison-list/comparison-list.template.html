@@ -1,11 +1,27 @@
 <table class="table table-sm mb-0">
     <tbody>
-        <tr ng-repeat="row in $ctrl.comparisons">
+        <tr ng-repeat="row in $ctrl.comparisons" class="comparison-list-row">
             <th scope="row">{{ $index + 1 }}</th>
-            <td>{{ row.aPhrase }}</td>
-            <td class="text-muted" ng-class="{ 'table-success': row.aIsMostPopular }">{{ row.aMatchCount }}</td>
-            <td>{{ row.bPhrase }}</td>
-            <td class="text-muted" ng-class="{ 'table-success': row.bIsMostPopular }">{{ row.bMatchCount }}</td>
+            <td>
+                <div class="text-right">
+                    <span class="text-muted small-count">
+                        {{ row.aMatchCount }}
+                    </span>
+                    <span ng-class="{ 'winner': row.aIsMostPopular }">{{ row.aPhrase }}</span>
+                </div>
+            </td>
+            <td class="text-primary">vs.</td>
+            <td>
+                <div class="text-left">
+                    <span ng-class="{ 'winner': row.bIsMostPopular }">{{ row.bPhrase }}</span>
+                    <span class="text-muted small-count">
+                        {{ row.bMatchCount }}
+                    </span>
+                    <span ng-hide="row.isPending==false">
+                        Counting up results...
+                    </span>
+                </div>
+            </td>
         </tr>
     </tbody>
 </table>

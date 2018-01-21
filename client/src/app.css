@@ -2,3 +2,19 @@
 #toast-container.toast-top-full-width > div, #toast-container.toast-bottom-full-width > div {
   margin: 4px auto;
 }
+
+/* app */
+tr.comparison-list-row th, 
+tr.comparison-list-row td {
+  vertical-align: text-bottom;
+}
+
+.small-count {
+  font-size: 0.8em;
+  padding: 0 5px;
+}
+
+.winner {
+  font-size: 1.3em;
+  font-weight: 700;
+}

@@ -8,17 +8,13 @@ namespace poptwit
 {
     public static class Settings
     {
-        private static IConfiguration _configuration;
-
-        public static string PopDbConnection { get { return _configuration["PopDBConnection"]; } }
-
-        static Settings()
-        {
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json");
-           _configuration = builder.Build(); 
-        }
+        public static IConfiguration Configuration { get; set; }
+        public static string PopDbConnection { get { return Configuration[nameof(PopDbConnection)]; } }
+        public static string TwitterKey { get { return Configuration[nameof(TwitterKey)]; } }
+        public static string TwitterSecret { get { return Configuration[nameof(TwitterSecret)]; } }
+        public static string TwitterAccessToken { get { return Configuration[nameof(TwitterAccessToken)]; } }
+        public static string TwitterAccessTokenSecret { get { return Configuration[nameof(TwitterAccessTokenSecret)]; } }
+        public static string TwitterPremiumSearchBaseAPI { get { return Configuration[nameof(TwitterPremiumSearchBaseAPI)]; } }
     }
 
     public class PopContext : DbContext

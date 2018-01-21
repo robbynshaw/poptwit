@@ -6,6 +6,7 @@ namespace poptwit.Models
     public class TweetComparison
     {
         public long TweetComparisonId { get; set; }
+        public bool IsPending { get; set; }
         public long UserId { get; set; }
         [JsonIgnore]
         public User User { get; set; }

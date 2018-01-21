@@ -21,8 +21,9 @@
         this.addNew = function(phraseA, phraseB) {
             toastr.info('Submitted new comparison', 'Submitted');
             repo.add(phraseA, phraseB)
+                .$promise
                 .then(emitAdded);
-        }
+        };
 
         function emitAdded(comparison) {
             toastr.success('Comparison processed successfully', 'Complete');

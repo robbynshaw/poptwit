@@ -11,9 +11,10 @@ using System;
 namespace poptwit.Migrations
 {
     [DbContext(typeof(PopContext))]
-    partial class PopContextModelSnapshot : ModelSnapshot
+    [Migration("20180120230133_AddIsPending")]
+    partial class AddIsPending
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

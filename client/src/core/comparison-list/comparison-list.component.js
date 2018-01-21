@@ -19,12 +19,16 @@
         var $this = this;
 
         this.$onInit =function(){
-            this.comparisons = types[$this.ptType]();
+            this.load();
         };
 
         var types = {
             user: getByUser,
             all: getTop
+        };
+        
+        this.load = function() {
+            this.comparisons = types[$this.ptType]();
         };
 
         function getByUser() { 
