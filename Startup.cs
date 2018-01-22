@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Microsoft.EntityFrameworkCore;
 
 namespace poptwit
 {
@@ -25,6 +26,9 @@ namespace poptwit
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<PopContext>(options =>
+                options.UseSqlite(Settings.PopDbConnection));
+
             services.AddMvc();
         }
 
@@ -44,15 +48,14 @@ namespace poptwit
             Settings.Configuration = builder.Build(); 
 
             app.UseMvc();
-            app.UseDefaultFiles();
 
+            app.UseDefaultFiles();
             app.UseStaticFiles(new StaticFileOptions
             {
                 FileProvider = new PhysicalFileProvider(
                     Path.Combine(Directory.GetCurrentDirectory(), "client")),
                 RequestPath = "",
             });
-            //app.UseStaticFiles();
         }
     }
 }

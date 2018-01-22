@@ -3,8 +3,11 @@
         <tr ng-repeat="row in $ctrl.comparisons" class="comparison-list-row">
             <th scope="row">{{ $index + 1 }}</th>
             <td>
+                <img ng-hide="row.aIsPending==false" src="/content/img/Pacman.gif" />
+            </td>
+            <td>
                 <div class="text-right">
-                    <span class="text-muted small-count">
+                    <span class="text-muted small-count" ng-hide="row.aIsPending">
                         {{ row.aMatchCount }}
                     </span>
                     <span ng-class="{ 'winner': row.aIsMostPopular }">{{ row.aPhrase }}</span>
@@ -14,13 +17,13 @@
             <td>
                 <div class="text-left">
                     <span ng-class="{ 'winner': row.bIsMostPopular }">{{ row.bPhrase }}</span>
-                    <span class="text-muted small-count">
+                    <span class="text-muted small-count" ng-hide="row.bIsPending">
                         {{ row.bMatchCount }}
                     </span>
-                    <span ng-hide="row.isPending==false">
-                        Counting up results...
-                    </span>
                 </div>
+            </td>
+            <td>
+                <img ng-hide="row.bIsPending==false" src="/content/img/Pacman.gif" />
             </td>
         </tr>
     </tbody>

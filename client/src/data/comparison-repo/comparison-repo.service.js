@@ -15,7 +15,7 @@
         };
         ////////////////
 
-        function getByUser(username, maxCount) {
+        function getByUser(username, maxCount, success, error) {
             return $resource('/api/TweetComparison/user', {}, {
                 query: {
                     method: 'GET',
@@ -24,10 +24,10 @@
                     },
                     isArray: true
                 }
-            }).query();
+            }).query(null, success, error);
         }
 
-        function getTop(maxCount) {
+        function getTop(maxCount, success, error) {
             return $resource('/api/TweetComparison', {}, {
                 query: {
                     method: 'GET',
@@ -36,7 +36,7 @@
                     },
                     isArray: true
                 }
-            }).query();
+            }).query(null, success, error);
         }
 
         function add(aPhrase, bPhrase) {

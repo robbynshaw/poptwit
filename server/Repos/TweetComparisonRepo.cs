@@ -12,67 +12,77 @@ namespace poptwit.Repos
         private UserRepo _userRepo = new UserRepo();
         private TwitterSearchRepo _tSearchRepo = new TwitterSearchRepo();
 
-        public IEnumerable<TweetComparison> GetTop(int maxCount)
+        public bool Exists(PopContext db, DateTime date, string phraseA, string phraseB)
         {
-            return new List<TweetComparison>()
-            {
-                new TweetComparison()
-                {
-                    APhrase = "Hello",
-                    AMatchCount = 123,
-                    BPhrase = "Hi",
-                    BMatchCount = 1,
-                }
-            };
+            return db.Comparisons
+                .SingleOrDefault(c => c.Created.Date == date.Date
+                    && c.APhrase.Equals(phraseA, StringComparison.InvariantCultureIgnoreCase)
+                    && c.BPhrase.Equals(phraseB, StringComparison.InvariantCultureIgnoreCase)
+                    ) != null;
         }
-        
-        public IEnumerable<TweetComparison> GetForCurrentUser(HttpRequest request, int maxCount)
+
+        public IEnumerable<TweetComparison> GetTop(PopContext db, int maxCount)
         {
-            using (var db = new PopContext())
-            {
-                User user = _userRepo.GetOrCreate(db, request);
-                db.Entry(user)
-                    .Collection(u => u.Comparisons)
-                    .Load();
-                return user.Comparisons
-                    .OrderByDescending(c => c.Created)
-                    .Take(maxCount);
-            }
+            return db.Comparisons
+                .OrderByDescending(c => c.Created)
+                .Take(maxCount)
+                .ToList();
+        }
+
+        public IEnumerable<TweetComparison> GetForCurrentUser(PopContext db, HttpRequest request, int maxCount)
+        {
+            User user = _userRepo.GetOrCreate(db, request);
+            db.Entry(user)
+                .Collection(u => u.Comparisons)
+                .Load();
+            return user.Comparisons
+                .OrderByDescending(c => c.Created)
+                .Take(maxCount);
         }
 
         private void LoadPopularity(long comparisonID)
         {
-            using (var db = new PopContext())
+            using (var db = new PopContextSingleton())
             {
                 TweetComparison comparison = db.Comparisons
                     .Single(c => c.TweetComparisonId == comparisonID);
 
+                Console.WriteLine($"Getting popularity for '{comparison.APhrase}'...");
                 comparison.AMatchCount = _tSearchRepo.GetPopularity(comparison.APhrase);
-                Console.WriteLine($"Phrase: {comparison.APhrase}, Count: {comparison.AMatchCount}");
+                comparison.AIsPending = false;
+                Console.WriteLine($"'{comparison.APhrase}' = {comparison.AMatchCount}");
+                db.SaveChanges();
+
+                Console.WriteLine($"Getting popularity for '{comparison.BPhrase}'...");
                 comparison.BMatchCount = _tSearchRepo.GetPopularity(comparison.BPhrase);
-                Console.WriteLine($"Phrase: {comparison.BPhrase}, Count: {comparison.BMatchCount}");
-                comparison.IsPending = false;
+                Console.WriteLine($"'{comparison.APhrase}' = {comparison.AMatchCount}");
+                comparison.BIsPending = false;
 
                 db.SaveChanges();
             }
         }
 
-        public TweetComparison Add(HttpRequest request, TweetComparison inputComparison)
+        public TweetComparison Add(PopContext db, HttpRequest request, TweetComparison inputComparison)
         {
+            // TODO Sql translation doesn't work
+            // if (Exists(db, DateTime.Now, inputComparison.APhrase, inputComparison.BPhrase))
+            // {
+            //     throw new Exception("Comparison already exists today");
+            // }
+
             inputComparison.Created = DateTime.Now;
             inputComparison.DateRange = TimeSpan.FromDays(7);
-            inputComparison.IsPending = true;
+            inputComparison.AIsPending = true;
+            inputComparison.BIsPending = true;
 
-            using (PopContext db = new PopContext())
+            User user = _userRepo.GetOrCreate(db, request);
+            inputComparison.UserId = user.UserId;
+
+            db.Add(inputComparison);
+            db.SaveChanges();
+
+            new Thread(() =>
             {
-                User user = _userRepo.GetOrCreate(db, request);
-                inputComparison.UserId = user.UserId;
-
-                db.Add(inputComparison);
-                db.SaveChanges();
-            }
-            
-            new Thread(() => {
                 LoadPopularity(inputComparison.TweetComparisonId);
             }).Start();
 

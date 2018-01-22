@@ -16,7 +16,6 @@ namespace poptwit.Repos
         public User GetOrCreate(PopContext db, HttpRequest request)
         {
             string uid = GetUID(request);
-            Console.WriteLine($"Getting user '{uid}'");
 
             User user = db.Users
                 .SingleOrDefault(s => s.UID == uid);
@@ -30,7 +29,6 @@ namespace poptwit.Repos
                 db.Users.Add(user);
                 db.SaveChanges();
             }
-            Console.WriteLine($"User ID: {user.UserId}");
 
             return user;
         }

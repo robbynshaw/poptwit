@@ -19,6 +19,16 @@ namespace poptwit
 
     public class PopContext : DbContext
     {
+        public DbSet<User> Users { get; set; }
+        public DbSet<TweetComparison> Comparisons { get; set; }
+
+        public PopContext(DbContextOptions<PopContext> options) : base(options)
+        {
+        }
+    }
+    
+    public class PopContextSingleton : DbContext
+    {
         private string _dbPath = Settings.PopDbConnection;
 
         public DbSet<User> Users { get; set; }
